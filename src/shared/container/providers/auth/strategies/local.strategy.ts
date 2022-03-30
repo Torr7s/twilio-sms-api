@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 
-import { Strategy } from 'passport-local'
+import { Strategy } from 'passport-local';
 
-import { AuthProvider } from '@shared/container/providers/auth/auth.provider';
+import { AuthProvider } from '../auth.provider';
 
 import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 

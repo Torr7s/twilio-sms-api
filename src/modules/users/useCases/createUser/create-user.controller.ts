@@ -2,9 +2,11 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { CreateUserDto } from '@modules/users/dtos/create-user.dto';
+
 import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 
-import { CreateUserService } from '@modules/users/useCases/createUser/create-user.service';
+import { CreateUserService } from './create-user.service';
+
 @Controller('/api/users/register')
 export class CreateUserController {
   constructor(private readonly _createUserservice: CreateUserService) { }

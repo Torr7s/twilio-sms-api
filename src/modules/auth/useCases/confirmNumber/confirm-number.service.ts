@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { UsersRepository } from '@modules/users/infra/repositories/users.repository';
-
-import { TwilioProvider } from 'infra/twilio/twilio.provider';
-
 import { VerificationCheckInstance } from 'twilio/lib/rest/verify/v2/service/verificationCheck';
+
+import { TwilioProvider } from '@infra/twilio/twilio.provider';
+
+import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
+import { UsersRepository } from '@modules/users/infra/repositories/users.repository';
 
 interface IConfirmNumberRequest {
   phone_number: string;
@@ -19,7 +20,7 @@ export class ConfirmNumberService {
   ) { }
 
   async perform(user_id: string, { phone_number, code }: IConfirmNumberRequest): Promise<void> {
-    const userRecord = await this._repository.findByPhoneNumber(phone_number)
+    const userRecord: UserEntity = await this._repository.findByPhoneNumber(phone_number)
 
     if (!userRecord) throw new BadRequestException('Invalid phone number!')
 

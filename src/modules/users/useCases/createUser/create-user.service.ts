@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
+import { TwilioProvider } from '@infra/twilio/twilio.provider';
+
 import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 import { UsersRepository } from '@modules/users/infra/repositories/users.repository';
 
-import { TwilioProvider } from 'infra/twilio/twilio.provider';
 import { AuthProvider } from '@shared/container/providers/auth/auth.provider';
 
 interface ICreateUserRequest {
@@ -12,6 +13,7 @@ interface ICreateUserRequest {
   password: string;
   phone_number: string;
 }
+
 @Injectable()
 export class CreateUserService {
   constructor(
