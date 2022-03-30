@@ -8,6 +8,6 @@ export interface IAuthProvider {
   comparePasswords(password: string, hashedPassword: string): Promise<boolean>;
   hashPassword(password: string, salt: number): Promise<string>;
   signToken(sub: string): string;
-  validateUser(email: string, password: string): Promise<UserEntity>;
+  validateUser(email: string, password: string): Promise<UserEntity | null>;
   verifyToken(token: string): IPayload;
 }
