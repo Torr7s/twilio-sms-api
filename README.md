@@ -24,38 +24,28 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This application was developed in order to put into practice some security methods in a Rest Api, such as phone number confirmation by SMS and authentication via JSONWebToken. 
 
 ## Installation
 
 ```bash
-$ npm install
+$ yarn
 ```
 
 ## Running the app
 
 ```bash
+# docker
+$ docker-compose up
+
 # development
-$ npm run start
+$ yarn dev
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
