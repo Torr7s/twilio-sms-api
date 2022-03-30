@@ -8,8 +8,6 @@ import { UsersRepository } from '@modules/users/infra/repositories/users.reposit
 
 import { IPayload, IAuthProvider } from './domain/repositories/auth.interface';
 
-import { UnauthorizedError } from './errors/unauthorized.error';
-
 @Injectable()
 export class AuthProvider implements IAuthProvider {
   constructor(
@@ -35,7 +33,7 @@ export class AuthProvider implements IAuthProvider {
     return authToken
   }
 
-  async validateUser(email: string, password: string): Promise<UserEntity> {
+  async validateUser(email: string, password: string): Promise<UserEntity | null> {
     const userRecord: UserEntity = await this._repository.findByEmail(email)
 
     if (userRecord) {
@@ -48,8 +46,6 @@ export class AuthProvider implements IAuthProvider {
         }
       }
     }
-
-    throw new UnauthorizedError('Invalid credentials!')
   }
 
   verifyToken(token: string): IPayload {
