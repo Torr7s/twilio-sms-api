@@ -1,0 +1,15 @@
+{
+  "type": "postgres",
+  "port": 5432,
+  "host": "database",
+  "username": "postgres",
+  "password": "pgpassword",
+  "database": "twilio_db", 
+  "entities": ["./src/modules/**/entities/*.ts"],
+  "synchronize": false,
+  "migrationsRun": true,
+  "migrations": ["./src/shared/infra/typeorm/migrations/*.{ts,js}"],
+  "cli": {
+    "migrationsDir": "./src/shared/infra/typeorm/migrations"
+  }
+}

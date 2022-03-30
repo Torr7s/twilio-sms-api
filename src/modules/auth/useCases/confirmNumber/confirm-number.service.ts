@@ -1,0 +1,43 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
+
+import { UsersRepository } from '@modules/users/infra/repositories/users.repository';
+
+import { TwilioProvider } from 'infra/twilio/twilio.provider';
+
+import { VerificationCheckInstance } from 'twilio/lib/rest/verify/v2/service/verificationCheck';
+
+interface IConfirmNumberRequest {
+  phone_number: string;
+  code: string;
+}
+
+@Injectable()
+export class ConfirmNumberService {
+  constructor(
+    private readonly _repository: UsersRepository,
+    private readonly _twilioProvider: TwilioProvider
+  ) { }
+
+  async perform(user_id: string, { phone_number, code }: IConfirmNumberRequest): Promise<void> {
+    const userRecord = await this._repository.findByPhoneNumber(phone_number)
+
+    if (!userRecord) throw new BadRequestException('Invalid phone number!')
+
+    const phoneNumberConfirmed = !!userRecord.phone_number_confirmed
+
+    if (phoneNumberConfirmed) throw new BadRequestException('Phone number already confirmed!')
+
+    const confirmationResult: VerificationCheckInstance = await this._twilioProvider.completePhoneNumberConfirmation(phone_number, code)
+
+    if (
+      !(confirmationResult.valid) ||
+      !['approved'].includes(confirmationResult.status)
+    ) {
+      throw new BadRequestException('Invalid code provided to confirm phone number!')
+    }
+
+    await this._repository.confirmPhoneNumber(user_id)
+
+    return
+  }
+}
