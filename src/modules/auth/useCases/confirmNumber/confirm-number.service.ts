@@ -8,6 +8,7 @@ import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 import { UsersRepository } from '@modules/users/infra/repositories/users.repository';
 
 interface IConfirmNumberRequest {
+  user_id: string;
   phone_number: string;
   code: string;
 }
@@ -19,7 +20,7 @@ export class ConfirmNumberService {
     private readonly _twilioProvider: TwilioProvider
   ) { }
 
-  async perform(user_id: string, { phone_number, code }: IConfirmNumberRequest): Promise<void> {
+  async perform({ user_id, phone_number, code }: IConfirmNumberRequest): Promise<void> {
     const userRecord: UserEntity = await this._repository.findByPhoneNumber(phone_number)
 
     if (!userRecord) throw new BadRequestException('Invalid phone number!')
