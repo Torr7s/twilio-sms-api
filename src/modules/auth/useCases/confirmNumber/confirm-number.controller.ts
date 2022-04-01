@@ -15,7 +15,15 @@ export class ConfirmNumberController {
     @Req() request: Request,
     @Res() response: Response
   ): Promise<Response> {
-    await this._confirmNumberService.perform(request.user_id, data)
+    const { user_id } = request
+    
+    const { phone_number, code } = data
+
+    await this._confirmNumberService.perform({
+      user_id,
+      phone_number,
+      code
+    })
 
     return response.sendStatus(200)
   }
