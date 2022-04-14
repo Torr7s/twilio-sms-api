@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@modules/users/dtos/create-user.dto';
+import { CreateUserDto } from '@modules/users/domain/dtos/create-user.dto';
 
 import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 

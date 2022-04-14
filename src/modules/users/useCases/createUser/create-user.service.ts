@@ -18,7 +18,6 @@ interface ICreateUserRequest {
 export class CreateUserService {
   constructor(
     private readonly _repository: UsersRepository,
-
     private readonly _authProvider: AuthProvider,
     private readonly _twilioProvider: TwilioProvider
   ) { }
@@ -29,13 +28,12 @@ export class CreateUserService {
     password,
     phone_number
   }: ICreateUserRequest): Promise<UserEntity> {
-    const userRecordByEmail = await this._repository.findByEmail(email)
+    const [userRecordByEmail, userRecordByPhoneNumber] = await Promise.all([
+      this._repository.findByEmail(email),
+      this._repository.findByPhoneNumber(phone_number)
+    ])
 
-    if (userRecordByEmail) throw new BadRequestException('User already exists!')
-
-    const userRecordByPhoneNumber = await this._repository.findByPhoneNumber(phone_number)
-
-    if (userRecordByPhoneNumber) throw new BadRequestException('User already exists!')
+    if (userRecordByEmail || userRecordByPhoneNumber) throw new BadRequestException('User already exists!')
 
     const hashedPassword = await this._authProvider.hashPassword(password, 9)
 

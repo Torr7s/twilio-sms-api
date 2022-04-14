@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 
-import { ConfirmNumberDto } from '@modules/auth/dtos/confirm-number.dto';
+import { ConfirmNumberDto } from '@modules/auth/domain/dtos/confirm-number.dto';
 
 import { ConfirmNumberService } from './confirm-number.service';
 
@@ -16,14 +16,15 @@ export class ConfirmNumberController {
     @Res() response: Response
   ): Promise<Response> {
     const { user_id } = request
-    
+
     const { phone_number, code } = data
 
-    await this._confirmNumberService.perform({
-      user_id,
-      phone_number,
-      code
-    })
+    await this._confirmNumberService
+      .perform({
+        user_id,
+        phone_number,
+        code
+      })
 
     return response.sendStatus(200)
   }
