@@ -8,6 +8,7 @@ import { CreateUserDto } from '@modules/users/domain/dtos/create-user.dto';
 import { UserEntity } from '@modules/users/infra/typeorm/entities/user.entity';
 
 import { CreateUserService } from './create-user.service';
+
 import { UserResponseDto } from '@modules/users/domain/dtos/user-response.dto';
 
 @ApiTags('Users')
