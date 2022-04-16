@@ -7,7 +7,7 @@ import { ConfirmNumberDto } from '@modules/auth/domain/dtos/confirm-number.dto';
 
 import { ConfirmNumberService } from './confirm-number.service';
 
-@ApiTags('Users')
+@ApiTags('Authentication')
 @Controller('/api/users/confirm')
 export class ConfirmNumberController {
   constructor(private readonly _confirmNumberService: ConfirmNumberService) { }
