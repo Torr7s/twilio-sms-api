@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { VerificationCheckInstance } from 'twilio/lib/rest/verify/v2/service/verificationCheck';
 
@@ -23,11 +23,11 @@ export class ConfirmNumberService {
   async perform({ user_id, phone_number, code }: IConfirmNumberRequest): Promise<void> {
     const userRecord: UserEntity = await this._repository.findByPhoneNumber(phone_number)
 
-    if (!userRecord) throw new BadRequestException('Invalid phone number!')
+    if (!userRecord) throw new UnauthorizedException('Invalid phone number!')
 
     const phoneNumberConfirmed = !!userRecord.phone_number_confirmed
 
-    if (phoneNumberConfirmed) throw new BadRequestException('Phone number already confirmed!')
+    if (phoneNumberConfirmed) throw new UnauthorizedException('Phone number already confirmed!')
 
     const confirmationResult: VerificationCheckInstance = await this._twilioProvider.completePhoneNumberConfirmation(phone_number, code)
 
