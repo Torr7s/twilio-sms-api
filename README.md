@@ -1,65 +1,77 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Twilio SMS Api
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project was made to put into practice some security methods in a rest api, such as phone number confirmation by SMS and authentication via JSONWebToken.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Stacks 
 
-## Description
+- Node.js
+- Typescript
+- NestJs
+- TypeORM
+- Docker, docker-compose
 
-This application was developed in order to put into practice some security methods in a Rest Api, such as phone number confirmation by SMS and authentication via JSONWebToken. 
+## Running Project
+To execute the project follow the steps:
 
-## Installation
-
-```bash
-$ yarn
+1. Clone this repository:
+```
+git clone https://github.com/Torr7s/twilio-sms-api
+cd twilio-sms-api
 ```
 
-## Running the app
-
-```bash
-# docker
-$ docker-compose up
-
-# development
-$ yarn dev
-
-# watch mode
-$ yarn start:dev
-
-# production mode
-$ npm run start:prod
+2. Install the dependencies:
+```
+yarn
 ```
 
-## Support
+3. Setup Docker and docker-compose
+```
+docker build -t twilio .
+docker-compose up
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Documentation
 
-## Stay in touch
+- **User creation**
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+After you have registered with your cell phone number, check your messages and look for the code that was sent.
 
-## License
+```http
+POST /api/users/register
+```
 
-Nest is [MIT licensed](LICENSE).
+| Parâmetro   | Tipo       | Descrição                     |
+| :---------- | :--------- | :-----------------------------|
+| `name`      | `string`   | **Required** User name     |
+| `email`     | `string`   | **Required** User email    |
+| `password`  | `string`   | **Required** User password |
+| `phone_number` | `string`  | **Required** User phone number |
 
+- **User authentication**
 
+Authenticate yourself to be able to access the confirmation route of your phone number.
+
+```http
+POST /api/login
+```
+
+| Parâmetro   | Tipo       | Descrição                     |
+| :---------- | :--------- | :-----------------------------|
+| `email`     | `string`   | **Required** User email       |
+| `password`  | `string`   | **Required** User password    |
+
+- **Phone number confirmation**
+
+After you have logged in, use the token to gain access to this route.
+
+```http
+POST /api/users/confirm
+```
+
+| Parâmetro   | Tipo       | Descrição                     |
+| :---------- | :--------- | :-----------------------------|
+| `user_id`     | `string`   | **Required** User id        |
+| `phone_number`| `string`   | **Required** User phone_number    |
+| `code`        | `string`   | **Required** Received code   |
+
+**Note**: The user_id parameter will be received automatically as soon as you log in.
